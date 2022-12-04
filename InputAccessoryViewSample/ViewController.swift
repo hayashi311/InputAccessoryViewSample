@@ -7,13 +7,36 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MessengerInputAccessoryView: UIView, UITextViewDelegate {
+    @IBOutlet var textView: UITextView! {
+        didSet {
+            textView.delegate = self
+        }
+    }
+
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIView.noIntrinsicMetric, height: .nan)
+    }
+
+    func textViewDidChange(_ textView: UITextView) {
+        reloadInputViews()
+    }
+}
+
+class ViewController: UITableViewController {
+
+    @IBOutlet var inputAccessoryTextView: MessengerInputAccessoryView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        tableView.keyboardDismissMode = .interactive
+        becomeFirstResponder()
     }
 
+    override var inputAccessoryView: UIView? {
+        return inputAccessoryTextView
+    }
 
+    override var canBecomeFirstResponder: Bool { true }
 }
 
